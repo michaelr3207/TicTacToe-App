@@ -14,6 +14,10 @@
         border-radius: 10px;
     }
 
+
+    .hide{
+        display: none;
+    }
     .nikeLogo{
         /*border: 2px solid red;*/
         margin: auto;
@@ -133,6 +137,36 @@
         font-size: 18px;
     }
 
+    .roundDisplay{
+        /*border: 2px solid gold;*/
+        height: 7%;
+    }
+
+    .header{
+        border: 2px solid red;
+        height: 15%;
+        color: white;
+    }
+
+    .roundDisplay{
+        text-align: center;
+        color: white;
+        font-size: 34px;
+        font-family: monospace;
+        margin-top: 10px;
+    }
+
+    .scores{
+        display: grid;
+        grid-template-columns: 200px 200px;
+       justify-content: center;
+        gap: 300px;
+        font-family: monospace;
+        font-size: 30px;
+        /*border: 2px solid gold;*/
+        margin-top: 60px;
+    }
+
     .notice{
         /*border: 2px solid deeppink;*/
         width: 60%;
@@ -146,11 +180,36 @@
         margin-top: 50px;
     }
 
+
     .under{
         text-decoration: underline;
 
     }
+
     label{
+    }
+
+    .gameBody{
+        margin: auto;
+        border: 2px solid gold;
+        width: 70%;
+        height: 90%;
+    }
+
+    .btnDisplay{
+        display: grid;
+        /*border: 2px solid red;*/
+        grid-template-columns: 100px 100px 100px;
+        justify-content: center;
+        height: 7%;
+        gap: 100px;
+    }
+
+    .btnDisplay button{
+        border-radius: 20px;
+        background: #3f3f85;
+        font-size: 15px;
+        color:white;
     }
 
 </style>
@@ -162,7 +221,7 @@
     <title>Title</title>
 </head>
 <body>
-<div class="mainBody">
+<div class="hide">
     <div class="nikeLogo">
         <img alt="logo" src="./images/tictactoewhitebackground.avif">
     </div>
@@ -188,6 +247,26 @@
 
     <div class="notice">
         By Signing Up You are Agreeing to this games <span class="under">Privacy Policy</span> and <span class="under">Terms of use</span>
+    </div>
+</div>
+<div class="gameBody">
+    <div class="header">
+        <div class="scores">
+            <div class="ply1Score">
+                Player 1:
+            </div>
+            <div class="ply2Score">
+                Player 2:
+            </div>
+        </div>
+    </div>
+    <div class="roundDisplay">
+        Round: 0
+    </div>
+    <div class="btnDisplay">
+        <button>Reset</button>
+        <button>Continue</button>
+        <button>New Game</button>
     </div>
 </div>
 </body>
