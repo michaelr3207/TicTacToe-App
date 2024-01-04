@@ -1,3 +1,160 @@
+
+<style>
+    body{
+        background: linear-gradient(222deg, rgba(12, 12, 12, 0.83), #1a0505);
+    }
+
+    .mainBody{
+        border: 4px solid #2a2929;
+        margin: auto;
+        margin-top: 200px;
+        height: 55%;
+        width: 28%;
+        background: #ffffff;
+        border-radius: 10px;
+    }
+
+    .nikeLogo{
+        /*border: 2px solid red;*/
+        margin: auto;
+        height: 10%;
+        width: 10%;
+    }
+
+    .nikeLogo img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .firstTitle{
+        /*border: 2px solid turquoise;*/
+        height: 8%;
+        width: 50%;
+        background: #ffffff;
+        margin: auto;
+        text-align: center;
+        font-family: cursive;
+        font-weight: bolder;
+        font-size: 34px;
+        margin-top: 17px;
+    }
+
+    .secondTitles{
+        /*border: 2px solid red;*/
+        height: 9%;
+        width: 60%;
+        background: #ffffff;
+        margin: auto;
+        margin-top: 10px;
+        font-family: "Times New Roman";
+        font-size: 21px;
+        text-align: center;
+        color: #676767;
+        line-height: 31px;
+    }
+
+    .formBoxOne{
+        /*border: 2px solid red;*/
+        height: 11%;
+        width: 72%;
+        background: #ffffff;
+        margin: auto;
+        margin-top: 45px;
+    }
+
+    .formBoxOne input, label{
+        background: #ffffff;
+        display: block;
+        font-size: 20px;
+    }
+
+    .formBoxOne input{
+        height: 60%;
+        width: 100%;
+        font-size: 15px;
+        border: 0.5px solid rgba(190, 190, 190, 0.97);
+    }
+
+    .formBoxTwo{
+        /*border: 2px solid red;*/
+        height: 11%;
+        width: 80%;
+        background: #ffffff;
+        margin: auto;
+        margin-top: 25px;
+        display: flex;
+    }
+
+    .formRowOne, .formRowTwo{
+        background: #ffffff;
+        margin: auto;
+        /*border: 2px solid green;*/
+        width: 40%;
+    }
+
+    .formRowOne input{
+        background: #ffffff;
+        width: 100%;
+        height: 55%;
+        border: 0.5px solid rgba(190, 190, 190, 0.97);
+    }
+
+    select{
+        background: #ffffff;
+        width: 100%;
+        height: 55%;
+        border: 0.5px solid rgba(190, 190, 190, 0.97);
+    }
+
+
+    .formRowTwo input{
+        background: #ffffff;
+        width: 100%;
+        height: 55%;
+        border: 0.5px solid rgba(190, 190, 190, 0.97);
+    }
+
+    .buttonDiv{
+        height: 8%;
+        width: 72%;
+        /*border: 1px solid black;*/
+        margin: auto;
+        margin-top: 70px;
+        background: black;
+    }
+
+    .buttonDiv button{
+        width: 100%;
+        height: 100%;
+        font-family: "Times New Roman";
+        color: #E5E7EB;
+        font-weight: bold;
+        background: black;
+        font-size: 18px;
+    }
+
+    .notice{
+        /*border: 2px solid deeppink;*/
+        width: 60%;
+        height: 6%;
+        margin: auto;
+        background: #ffffff;
+        text-align: center;
+        font-size: 17px;
+        font-family: monospace;
+        color: #676767;
+        margin-top: 50px;
+    }
+
+    .under{
+        text-decoration: underline;
+
+    }
+    label{
+    }
+
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +162,33 @@
     <title>Title</title>
 </head>
 <body>
+<div class="mainBody">
+    <div class="nikeLogo">
+        <img alt="logo" src="./images/tictactoewhitebackground.avif">
+    </div>
+    <div class="firstTitle">
+        Tic-Tac-Toe Game
+    </div>
+    <div class="secondTitles">
+        Please enter the names for the two players in the spaces provided below.
+    </div>
 
+    <div class="formBoxOne">
+        <label for="ply1Box">Player 1 Name:</label>
+        <input minlength="3" maxlength="5" type="email" id="ply1Box" name="playerNameBox" placeholder="Enter name here">
+    </div>
+    <div class="formBoxOne">
+        <label for="ply2Box">Player 2 Name:</label>
+        <input minlength="3" maxlength="5" type="email" id="ply2Box" name="playerNameBox" placeholder="Enter name here">
+    </div>
+
+    <div class="buttonDiv">
+        <button>ENTER</button>
+    </div>
+
+    <div class="notice">
+        By Signing Up You are Agreeing to this games <span class="under">Privacy Policy</span> and <span class="under">Terms of use</span>
+    </div>
+</div>
 </body>
 </html>
