@@ -18,6 +18,10 @@
     .hide{
         display: none;
     }
+
+    .hiddenGameUi{
+        display: none;
+    }
     .nikeLogo{
         /*border: 2px solid red;*/
         margin: auto;
@@ -180,7 +184,28 @@
         margin-top: 50px;
     }
 
+    .gameContainer{
+        display: grid;
+        border: 2px solid beige;
+        width: 50%;
+        height: 60%;
+        margin: auto;
+        margin-top: 40px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 
+    .cellBlock{
+        border: 1px solid white;
+        color: white;
+        text-align: center;
+        font-family: monospace;
+        font-size: 200px;
+
+    }
+
+    .cellBlock:hover{
+        background: #2a2929;
+    }
     .under{
         text-decoration: underline;
 
@@ -221,7 +246,7 @@
     <title>Title</title>
 </head>
 <body>
-<div class="hide">
+<div class="mainBody" id="enterForm">
     <div class="nikeLogo">
         <img alt="logo" src="./images/tictactoewhitebackground.avif">
     </div>
@@ -249,7 +274,7 @@
         By Signing Up You are Agreeing to this games <span class="under">Privacy Policy</span> and <span class="under">Terms of use</span>
     </div>
 </div>
-<div class="gameBody">
+<div class="hide" id="mainGame">
     <div class="header">
         <div class="scores">
             <div class="ply1Score">
@@ -264,9 +289,20 @@
         Round: 0
     </div>
     <div class="btnDisplay">
-        <button>Reset</button>
+        <button id="resetBtn">Reset</button>
         <button>Continue</button>
         <button>New Game</button>
+    </div>
+    <div class="gameContainer">
+        <div id="0" class="cellBlock"></div>
+        <div id="1" class="cellBlock"></div>
+        <div id="2" class="cellBlock"></div>
+        <div id="3" class="cellBlock"></div>
+        <div id="4" class="cellBlock"></div>
+        <div id="5" class="cellBlock"></div>
+        <div id="6" class="cellBlock"></div>
+        <div id="7" class="cellBlock"></div>
+        <div id="8" class="cellBlock"></div>
     </div>
 </div>
 </body>
