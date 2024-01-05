@@ -142,6 +142,7 @@ function startNewGame(allGameCells, player1, player2){
         alert('game not over');
     }
 }
+//comment
 
 function addEventListenerToCellBlocks(player1, player2, allGameCells){
     for(let index = 0; index <= 8; index ++){
