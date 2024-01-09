@@ -1,35 +1,16 @@
-console.log('test');
-
-
-console.log('tetststs;'  )
-const name = "Bob";
-const age = 28;
-const color = "red";
-
-const thatObject = { name: name, age: age, color: color };
-
-console.log(thatObject);
-
-
-const fancyObject = {name,age,color};
-
-console.log(fancyObject);
-let currentPlayerInGame;
-let currentNumberOfTurns = 0;
-let gameOver = false;
-
-
+addingEventListenerToButtons();
+const gameApp = createGame('Tic Tac Toe');
+gameApp.gameBoard.createCellsAndAddToGameboard();
+addEventListenerToCellBlocks(gameApp);
+console.log('ois it off: ' + gameApp.getGameOver());
 
 
 // using factory to create player objects instead of a cosntuctor
 function createPlayer(plyName){
-    let playerMarking = "";
     let score = 0;
     const increaseScore = () => score ++;
     const getScore = () => score;
-    const setPlayerMarking = (marking) => playerMarking = marking;
-    const getPlayerMarking = () => playerMarking;
-    return {plyName, increaseScore, getScore, setPlayerMarking, getPlayerMarking};
+    return {plyName, increaseScore, getScore};
 }
 
 
@@ -44,24 +25,27 @@ function createGameCell(){
 }
 
 
+
 function createGameBoard(boardName) {
     let cells = [];
     const createCellsAndAddToGameboard = () => {
         for(let index = 0; index <= 8; index ++){
             const currentCell = createGameCell();
             cells.push(currentCell);
-            console.log(index);
         }
     }
+
+    const getSpecificCell = (indexOfCell) => cells[indexOfCell];
+    const removeCells = () => cells = [];
     const getAllCells = () => cells;
-    return {getAllCells, createCellsAndAddToGameboard, boardName};
+    const getAccessToSpecificCell = (index) => cells[index];
+    return {getAllCells, createCellsAndAddToGameboard, boardName, getSpecificCell, removeCells};
 }
 
 function createGamePlayers(player1Name, player2Name){
     const player1 = createPlayer(player1Name);
-    player1.setPlayerMarking('X');
     const player2 = createPlayer(player2Name);
-    player2.setPlayerMarking('O');
+    console.log('player name: ' + player1.plyName);
     ticTacToe(player1, player2);
 }
 
@@ -78,131 +62,158 @@ function addingEventListenerToButtons(){
     enterButton.addEventListener("click", function (){
         gatherFormData();
     });
-}
-
-function createGame(gameName, player1, player2) {
-    let gamePlayers = [];
-    const addGamePlayers = () => {
-        gamePlayers.push(player1);
-        gamePlayers.push(player2);
-    }
-    const getGamePlayers = () => gamePlayers;
-    const gameBoard = createGameBoard();
-    return {gameBoard, gameName, addGamePlayers, getGamePlayers};
-}
-addingEventListenerToButtons();
-// const game = createGameBoard();
-// game.createCellsAndAddToGameboard();
-// console.log(game.getAllCells());
-// const allCells = game.getAllCells();
-// console.log(allCells[0].getCurrentMarking());
-
-function ticTacToe(player1, player2) {
-    const gameApp = createGame('Tic Tac Toe', player1, player2);
-    currentPlayerInGame = player1;
-    gameApp.gameBoard.createCellsAndAddToGameboard(); gameApp.addGamePlayers();
-    const allGameCells = gameApp.gameBoard.getAllCells();
-    const gamePlayers = gameApp.getGamePlayers();
-    addEventListenerToCellBlocks(player1, player2, allGameCells, gameOver);
-    console.log(allGameCells);
-    console.log(gamePlayers[1].getPlayerMarking());
     const newGameButton = document.getElementById('resetBtn');
     newGameButton.addEventListener("click", function (){
-        startNewGame(allGameCells, player1, player2);
+        startNewGame(gameApp);
     })
 }
 
-function checkNumberOfTurns(allGameCells){
-   if(currentNumberOfTurns >= 9){
-       alert('Game Over');
-       currentNumberOfTurns = 0;
-       clearTicTacToeGameData(allGameCells);
+function createGame(gameName) {
+    let gameOver = false;
+    let gamePlayers = [];
+    let currentRound = 0;
+    let currentPlayerInGame;
+
+    const addPlayer = (player) => gamePlayers.push(player);
+
+    const getGamePlayers = () => gamePlayers;
+    const getCurrentRound = () => currentRound;
+    const getCurrentPlayerInGame = () => currentPlayerInGame;
+    const setCurrentPlayerInGame = (player) => currentPlayerInGame = player;
+    const increaseRound = () => currentRound ++;
+    const gameBoard = createGameBoard();
+    const getGameOver = () => gameOver;
+    const setGameOver = (option) => gameOver = option;
+    const setNumberOfTurns = (number) => currentRound = number;
+    const resetRound = () => currentRound = 0;
+    const clearPlayers = () => gamePlayers = [];
+    const getSpecificPlayer = (index) => gamePlayers[index];
+
+    const newGameBtn = document.getElementById('newGame');
+    newGameBtn.addEventListener("click",  () => {
+        document.getElementById('enterForm').className = 'mainBody';
+        document.getElementById('mainGame').className = 'hide';
+        for(let index = 0; index < gameBoard.getAllCells().length; index ++){
+            document.getElementById(index.toString()).innerHTML = "";
+            gameBoard.getSpecificCell(index).changeMarking("");
+        }
+        // gameBoard.removeCells();
+        setGameOver(false);
+    });
+    return {gameBoard,
+        gameName, getGamePlayers,
+        getCurrentRound, increaseRound, getCurrentPlayerInGame, newGameBtn, clearPlayers, getSpecificPlayer,
+        setCurrentPlayerInGame, setGameOver, getGameOver, gamePlayers, resetRound, setNumberOfTurns, addPlayer
+    };
+
+}
+
+
+function ticTacToe(player1, player2) {
+    gameApp.clearPlayers();
+    document.getElementById('display').innerHTML = `Good Luck!`;
+    gameApp.addPlayer(player1); gameApp.addPlayer(player2);
+    console.log('current player 1: ' + gameApp.getSpecificPlayer(0).plyName);
+    gameApp.setCurrentPlayerInGame(player1);
+    updateScoreUi(gameApp);
+}
+
+function checkNumberOfTurns(gameApp){
+   if(gameApp.getCurrentRound() >= 9){
+       gameApp.resetRound();
+       gameApp.setGameOver(true);
+       document.getElementById('display').innerHTML = `DRAW!!`;
+       gameApp.setNumberOfTurns(-1);
    }
 }
 
-function checkForMatchingCells(allGameCells, player){
-    console.log('game cell 0:' + allGameCells[1].getCurrentMarking());
-    compareThreeCellsForAMatch(0, 1, 2, allGameCells, player);
-    compareThreeCellsForAMatch(3, 4, 5, allGameCells, player);
-    compareThreeCellsForAMatch(6, 7, 8, allGameCells, player);
-    compareThreeCellsForAMatch(0, 3, 6, allGameCells, player);
-    compareThreeCellsForAMatch(1, 4, 7, allGameCells, player);
-    compareThreeCellsForAMatch(2, 5, 8, allGameCells, player);
-    compareThreeCellsForAMatch(0, 4, 8, allGameCells, player);
-    compareThreeCellsForAMatch(2, 4, 6, allGameCells, player);
+function checkForMatchingCells(gameApp){
+    compareThreeCellsForAMatch(0, 1, 2, gameApp);
+    compareThreeCellsForAMatch(3, 4, 5, gameApp);
+    compareThreeCellsForAMatch(6, 7, 8, gameApp);
+    compareThreeCellsForAMatch(0, 3, 6, gameApp);
+    compareThreeCellsForAMatch(1, 4, 7, gameApp);
+    compareThreeCellsForAMatch(2, 5, 8, gameApp);
+    compareThreeCellsForAMatch(0, 4, 8, gameApp);
+    compareThreeCellsForAMatch(2, 4, 6, gameApp);
 }
 
-function startNewGame(allGameCells, player1, player2){
-    console.log('Player One Score: ' + player1.getScore());
-    console.log('Player Two Score: ' + player2.getScore());
-    if(gameOver){
-        clearTicTacToeGameData(allGameCells);
+function startNewGame(gameApp){
+    if(gameApp.getGameOver()){
+        clearTicTacToeGameData(gameApp);
     }
     else{
-        alert('game not over');
+        alert('Game not over yet!');
     }
 }
 
-function addEventListenerToCellBlocks(player1, player2, allGameCells){
+function addEventListenerToCellBlocks(gameApp){
+
     for(let index = 0; index <= 8; index ++){
         document.getElementById(index.toString()).addEventListener("click", function (e){
-            if(!gameOver && e.target === document.getElementById(index.toString()) && currentPlayerInGame === player1 && checkCellAvailability(allGameCells[index])){
-                console.log('cell before: ' + allGameCells[index].getCurrentMarking());
+            if(!gameApp.getGameOver() && e.target === document.getElementById(index.toString()) && gameApp.getCurrentPlayerInGame() === gameApp.getSpecificPlayer(0) && checkCellAvailability(gameApp.gameBoard.getSpecificCell(index))){
+                console.log('bruhhhhh1');
+                document.getElementById('display').innerHTML = `${gameApp.getSpecificPlayer(1).plyName}'s turn!`;
                 document.getElementById(index.toString()).innerHTML = 'X';
-                allGameCells[index].changeMarking('X');
-                console.log('cell now: ' + allGameCells[index].getCurrentMarking());
-                checkForMatchingCells(allGameCells, player1)
-                currentPlayerInGame = player2;
-                currentNumberOfTurns ++;
-                checkNumberOfTurns(allGameCells);
-                console.log('CUrrne number of turns: ==================>' + currentNumberOfTurns);
-
+                gameApp.gameBoard.getSpecificCell(index).changeMarking('X');
+                checkForMatchingCells(gameApp)
+                gameApp.setCurrentPlayerInGame(gameApp.getSpecificPlayer(1));
+                gameApp.increaseRound();
+                checkNumberOfTurns(gameApp);
             }
-            else if(!gameOver && e.target === document.getElementById(index.toString()) && currentPlayerInGame === player2 && checkCellAvailability(allGameCells[index])){
-                console.log('cell before: ' + allGameCells[index].getCurrentMarking());
+            else if(!gameApp.getGameOver() && e.target === document.getElementById(index.toString()) && gameApp.getCurrentPlayerInGame() === gameApp.getSpecificPlayer(1) && checkCellAvailability(gameApp.gameBoard.getSpecificCell(index))){
+                document.getElementById('display').innerHTML = `${gameApp.getSpecificPlayer(0).plyName}'s turn!`;
+                console.log('bruhhhhh2');
                 document.getElementById(index.toString()).innerHTML = 'O';
-                allGameCells[index].changeMarking('O');
-                console.log('cell now: ' + allGameCells[index].getCurrentMarking());
-                checkForMatchingCells(allGameCells, player2)
-                currentPlayerInGame = player1;
-                currentNumberOfTurns ++;
-                checkNumberOfTurns(allGameCells);
-                console.log('CUrrne number of turns: ==================>' + currentNumberOfTurns);
-
+                gameApp.gameBoard.getSpecificCell(index).changeMarking('O');
+                checkForMatchingCells(gameApp);
+                gameApp.setCurrentPlayerInGame(gameApp.getSpecificPlayer(0));
+                gameApp.increaseRound();
+                checkNumberOfTurns(gameApp);
             }
             else{
-                alert('Error cannot make move');
+                document.getElementById('display').innerHTML = `ERROR: Cannot make move!`;
             }
+
         })
     }
 }
 
+
 function checkCellAvailability(cellBlock){
     if(cellBlock.getCurrentMarking() !== ""){
-        alert('This block has been taken!');
+        document.getElementById('display').innerHTML = 'Block has been taken!';
         return false;
     }
     return true;
 }
 
-function compareThreeCellsForAMatch(index1, index2, index3, allGameCells, player){
-    if ((allGameCells[index1].getCurrentMarking() === 'X' && allGameCells[index2].getCurrentMarking() === 'X' && allGameCells[index3].getCurrentMarking() === 'X')
-        || (allGameCells[index1].getCurrentMarking() === 'O' && allGameCells[index2].getCurrentMarking() === 'O' && allGameCells[index3].getCurrentMarking() === 'O')) {
-        console.log('win');
-        alert('win!!');
-        gameOver = true;
-        alert(player.plyName + ' has won');
-        player.increaseScore();
-        console.log(player.plyName + ' current score: ' + player.getScore());
-        currentNumberOfTurns = -1;
+function compareThreeCellsForAMatch(index1, index2, index3, gameApp){
+    if ((gameApp.gameBoard.getSpecificCell(index1).getCurrentMarking() === 'X' && gameApp.gameBoard.getSpecificCell(index2).getCurrentMarking() === 'X' && gameApp.gameBoard.getSpecificCell(index3).getCurrentMarking() === 'X')
+        || (gameApp.gameBoard.getSpecificCell(index1).getCurrentMarking() === 'O' && gameApp.gameBoard.getSpecificCell(index2).getCurrentMarking() === 'O' && gameApp.gameBoard.getSpecificCell(index3).getCurrentMarking() === 'O')) {
+        gameApp.setGameOver(true);
+        document.getElementById('display').innerHTML = `${gameApp.getCurrentPlayerInGame().plyName} has won!`;
+        gameApp.getCurrentPlayerInGame().increaseScore();
+        gameApp.setNumberOfTurns(-1);
+        updateScoreUi(gameApp);
     }
 }
 
-function clearTicTacToeGameData(allGameCells){
-    gameOver = false;
-    for(let index = 0; index < allGameCells.length; index ++){
+function clearTicTacToeGameData(gameApp){
+    document.getElementById('display').innerHTML = `Good Luck!`;
+    gameApp.setGameOver(false);
+    for(let index = 0; index < gameApp.gameBoard.getAllCells().length; index ++){
         document.getElementById(index.toString()).innerHTML = "";
-        allGameCells[index].changeMarking("");
+        gameApp.gameBoard.getSpecificCell(index).changeMarking("");
     }
 }
+
+function updateScoreUi(gameApp){
+    console.log('players UI: ' + gameApp.gamePlayers[0]);
+    document.getElementById('p1Score').innerHTML = `${gameApp.getSpecificPlayer(0).plyName}:
+     ${gameApp.getSpecificPlayer(0).getScore()}`;
+    document.getElementById('p2Score').innerHTML = `${gameApp.getSpecificPlayer(1).plyName}:
+     ${gameApp.getSpecificPlayer(1).getScore()}`;
+}
+
 // gatherFormData();
