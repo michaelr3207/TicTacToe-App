@@ -13,6 +13,8 @@ function createPlayer(plyName){
     return {plyName, increaseScore, getScore};
 }
 
+// random comment
+
 
 function createGameCell(){
     let currentPlayerOnCell = "";
